@@ -47,3 +47,16 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: WARN
+
+  postgres:
+    image: postgres:13
+    hostname: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: manning
+      POSTGRES_PASSWORD: manning
+      POSTGRES_DB: energy
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql/create-tables.sql:/docker-entrypoint-initdb.d/1-create-tables.sql
