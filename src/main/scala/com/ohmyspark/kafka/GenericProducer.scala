@@ -9,7 +9,7 @@ import org.apache.kafka.clients.producer.{
   ProducerRecord
 }
 
-object Producer {
+object GenericProducer {
   val props: Properties = Map(
     "bootstrap.servers" -> "localhost:29092",
     "key.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
@@ -20,10 +20,16 @@ object Producer {
     "compression.type" -> "snappy"
   ).toProperties
 
-  lazy val producer: Producer[Nothing, String] = new KafkaProducer(props)
+  implicit def apply[A, B]: GenericProducer[A, B] = new GenericProducer[A, B] {
+    override val producer: Producer[A, B] = new KafkaProducer[A, B](props)
+  }
+}
 
-  def sendMessage(topic: String, message: String): Unit = {
-    val record = new ProducerRecord(topic, message)
+trait GenericProducer[A, B] {
+  val producer: Producer[A, B]
+
+  def sendMessage(topic: String, key: A, message: B): Unit = {
+    val record = new ProducerRecord[A, B](topic, key, message)
     producer.send(record)
   }
 }
