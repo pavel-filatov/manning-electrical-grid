@@ -12,11 +12,11 @@ import org.apache.kafka.clients.producer.{
 object GenericProducer {
   val props: Properties = Map(
     "bootstrap.servers" -> "localhost:29092",
-    "key.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
+    "schema.registry.url" -> "http://localhost:8090",
     "acks" -> "1",
     "retries" -> "3",
     "key.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
-    "value.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
+    "value.serializer" -> "io.confluent.kafka.serializers.KafkaAvroSerializer",
     "compression.type" -> "snappy"
   ).toProperties
 
