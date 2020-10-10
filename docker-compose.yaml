@@ -48,6 +48,20 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
       SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: WARN
 
+  kafka-connect:
+    image: confluentinc/cp-enterprise-kafka:5.4.0
+    hostname: kafka-connect
+    container_name: kafka-connect
+    depends_on:
+      - broker
+      - zookeeper
+      - schema-registry
+    volumes:
+      - ./connect/:/etc/connect/
+      - ./lib/kafka-connect-jdbc:/usr/share/java/kafka-connect-jdbc
+      - ./lib/kafka-connect-avro-converter:/usr/share/java/kafka-connect-avro-converter
+    command: connect-standalone /etc/connect/worker.properties /etc/connect/postgresql-connector.properties
+
   postgres:
     image: postgres:13
     hostname: postgres
@@ -58,5 +72,3 @@ services:
       POSTGRES_DB: energy
     ports:
       - "5432:5432"
-    volumes:
-      - ./sql/create-tables.sql:/docker-entrypoint-initdb.d/1-create-tables.sql

@@ -43,4 +43,4 @@ generate-pricing:  #> Run pricing generator and post data to the target URL
 
 .PHONY: consume-events
 consume-events:  #> Consume messages from events topic and print them into console
-	docker exec -it broker kafka-console-consumer --topic events --bootstrap-server broker:9092 --from-beginning
+	docker exec -it schema-registry kafka-avro-console-consumer --topic events --bootstrap-server broker:9092 --from-beginning

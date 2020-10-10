@@ -31,8 +31,10 @@
         <commons.io.version>2.5</commons.io.version>
         <aws.sdk.version>1.11.77</aws.sdk.version>
         <scala.compat.version>2.12</scala.compat.version>
+        <scala.major.version>2.12</scala.major.version>
         <scala.version>2.12.6</scala.version>
         <spec2.version>4.2.0</spec2.version>
+        <circe.version>0.12.3</circe.version>
     </properties>
 
     <build>
@@ -221,6 +223,22 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
+        </dependency>
+        <!-- JSON parsing -->
+        <dependency>
+            <groupId>io.circe</groupId>
+            <artifactId>circe-core_${scala.major.version}</artifactId>
+            <version>${circe.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.circe</groupId>
+            <artifactId>circe-parser_${scala.major.version}</artifactId>
+            <version>${circe.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.circe</groupId>
+            <artifactId>circe-generic_${scala.major.version}</artifactId>
+            <version>${circe.version}</version>
         </dependency>
 
         <!-- Databases drivers -->
