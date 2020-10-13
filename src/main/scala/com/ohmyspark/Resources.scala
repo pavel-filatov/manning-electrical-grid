@@ -1,20 +1,28 @@
 package com.ohmyspark
 
+import java.util.Properties
+
 import com.codahale.metrics.annotation.Timed
+import com.ohmyspark.dao.EventDAO
 import com.ohmyspark.energy.avro.Event
 import com.ohmyspark.kafka.GenericProducer
 import javax.ws.rs._
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.{MediaType, Response}
 import org.apache.kafka.clients.producer.ProducerRecord
 
 object Resources {
   @Path("/events/{device-id}")
   @Consumes(Array(MediaType.APPLICATION_JSON))
-  class EventsResource {
-    val producer: GenericProducer[String, Event] = GenericProducer[String, Event]
+  @Produces(Array(MediaType.APPLICATION_JSON))
+  class EventsResource(dao: EventDAO, props: Properties) {
+    val producer: GenericProducer[String, Event] =
+      GenericProducer[String, Event](props)
 
     @POST
-    @Timed def processMessage(@PathParam("device-id") deviceId: String, jsons: String): Unit = {
+    @Timed def processMessage(
+        @PathParam("device-id") deviceId: String,
+        jsons: String
+    ): Unit = {
       jsons.split("\n") foreach { json =>
         val event = parsing.EventParser.parseEvent(json).map(_.toEvent)
         event match {
@@ -25,12 +33,19 @@ object Resources {
         }
       }
     }
+
+    @GET
+    @Timed def getEvents(@PathParam("device-id") deviceId: String): Response = {
+      val events = dao.selectEvents(deviceId)
+      Response.ok().entity(events).build()
+    }
   }
 
   @Path("/pricing")
   @Consumes(Array(MediaType.APPLICATION_JSON))
-  class PricingResource {
-    val producer: GenericProducer[Nothing, String] = GenericProducer[Nothing, String]
+  class PricingResource(props: Properties) {
+    val producer: GenericProducer[Nothing, String] =
+      GenericProducer[Nothing, String](props)
 
     @POST
     @Timed def processMessage(message: String): Unit = {
