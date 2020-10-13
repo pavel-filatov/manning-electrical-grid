@@ -31,7 +31,9 @@ object ElectricalGridWebApp extends Application[ElectricalGridConfiguration] {
     )
     val dao: EventDAO = jdbi.onDemand(classOf[EventDAO])
 
-    environment.jersey.register(new Resources.EventsResource(dao))
-    environment.jersey.register(new Resources.PricingResource)
+    val props = configuration.getKafkaConfig
+
+    environment.jersey.register(new Resources.EventsResource(dao, props))
+    environment.jersey.register(new Resources.PricingResource(props))
   }
 }

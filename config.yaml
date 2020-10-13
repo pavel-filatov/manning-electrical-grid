@@ -12,3 +12,11 @@ database:
   password: manning
   url: "jdbc:postgresql://localhost:5432/energy"
 
+kafka:
+  bootstrap.servers: http://localhost:29092
+  schema.registry.url: http://localhost:8090
+  key.serializer: org.apache.kafka.common.serialization.StringSerializer
+  value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+  acks: 1
+  retries: 3
+  compression.type: snappy

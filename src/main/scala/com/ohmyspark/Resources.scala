@@ -1,5 +1,7 @@
 package com.ohmyspark
 
+import java.util.Properties
+
 import com.codahale.metrics.annotation.Timed
 import com.ohmyspark.dao.EventDAO
 import com.ohmyspark.energy.avro.Event
@@ -12,9 +14,9 @@ object Resources {
   @Path("/events/{device-id}")
   @Consumes(Array(MediaType.APPLICATION_JSON))
   @Produces(Array(MediaType.APPLICATION_JSON))
-  class EventsResource(dao: EventDAO) {
+  class EventsResource(dao: EventDAO, props: Properties) {
     val producer: GenericProducer[String, Event] =
-      GenericProducer[String, Event]
+      GenericProducer[String, Event](props)
 
     @POST
     @Timed def processMessage(
@@ -41,9 +43,9 @@ object Resources {
 
   @Path("/pricing")
   @Consumes(Array(MediaType.APPLICATION_JSON))
-  class PricingResource {
+  class PricingResource(props: Properties) {
     val producer: GenericProducer[Nothing, String] =
-      GenericProducer[Nothing, String]
+      GenericProducer[Nothing, String](props)
 
     @POST
     @Timed def processMessage(message: String): Unit = {
