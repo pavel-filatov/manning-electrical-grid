@@ -1,5 +1,3 @@
-template: Hello, %s!
-defaultName: Stranger
 server:
   type: simple
   applicationContextPath: /
@@ -7,3 +5,10 @@ server:
   connector:
     type: http
     port: 9000
+
+database:
+  driverClass: org.postgresql.Driver
+  user: manning
+  password: manning
+  url: "jdbc:postgresql://localhost:5432/energy"
+

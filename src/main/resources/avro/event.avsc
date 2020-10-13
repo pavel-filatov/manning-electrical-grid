@@ -2,17 +2,17 @@
   "type": "record",
   "name": "Event",
   "fields": [
-    {"name": "charging_source", "type": "string"},
-    {"name": "processor4_temp",  "type": "int"},
     {"name": "device_id", "type": "string"},
-    {"name": "processor2_temp", "type": "int"},
-    {"name": "processor1_temp", "type": "int"},
+    {"name": "charging_source", "type": "string"},
     {"name": "charging", "type": "int"},
     {"name": "current_capacity", "type": "int"},
+    {"name": "processor1_temp", "type": "int"},
+    {"name": "processor2_temp", "type": "int"},
+    {"name": "processor3_temp", "type": "int"},
+    {"name": "processor4_temp",  "type": "int"},
     {"name": "inverter_state", "type": "int"},
     {"name": "moduleL_temp", "type": "int"},
     {"name": "moduleR_temp", "type": "int"},
-    {"name": "processor3_temp", "type": "int"},
     {"name": "SoC_regulator", "type": "double"}
   ]
 }
